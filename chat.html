@@ -13,6 +13,8 @@
 </head>
 <body>
 
+<!-- TOP BAR -->
+
 <div class="topbar">
 
   <span class="backBtn"
@@ -25,6 +27,22 @@
   </span>
 
 </div>
+
+<!-- CALL BUTTONS TOP -->
+
+<div class="callButtonsTop">
+
+  <button onclick="startVoiceCall()">
+    📞 Voice
+  </button>
+
+  <button onclick="startVideoCall()">
+    📹 Video
+  </button>
+
+</div>
+
+<!-- CHAT AREA -->
 
 <div id="chatContainer"
      class="chatContainer">
@@ -82,17 +100,9 @@
 
 </div>
 
-<!-- BOTTOM BAR -->
+<!-- MESSAGE BAR -->
 
 <div class="bottomBar">
-
-  <button onclick="startVoiceCall()">
-    📞
-  </button>
-
-  <button onclick="startVideoCall()">
-    📹
-  </button>
 
   <button onclick="
   document
@@ -115,7 +125,7 @@
          placeholder="Type message">
 
   <button onclick="sendMessage()">
-    Send
+    ➤
   </button>
 
 </div>
