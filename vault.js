@@ -50,35 +50,32 @@ async function(){
 
   try{
 
+    // READ PASSWORD
     const snapshot =
       await get(
         ref(
           db,
-          "Users/" + currentUid
+          "VaultPasswords/" +
+          currentUid
         )
       );
 
-    const data =
-      snapshot.val();
-
-    // CHANGE THIS IF NEEDED
-    const savedPassword =
-      data.vaultPassword ||
-      data.vaultLock ||
-      data.password;
-
-    if(!savedPassword){
+    if(!snapshot.exists()){
 
       alert("Vault Lock Not Set");
       return;
 
     }
 
+    const savedPassword =
+      snapshot.val();
+
     if(
       enteredPassword ===
       savedPassword
     ){
 
+      // OPEN VAULT
       document
       .querySelector(".vaultLock")
       .style.display = "none";
@@ -113,27 +110,44 @@ async function(){
     .getElementById("vaultFile")
     .files[0];
 
-  if(!file) return;
+  if(!file){
 
-  const url =
-    await uploadToCloudinary(file);
+    alert("Select File");
+    return;
 
-  await set(
+  }
 
-    push(
-      ref(
-        db,
-        "Users/" +
-        currentUid +
-        "/Vault"
-      )
-    ),
+  try{
 
-    {
-      url
-    }
+    const url =
+      await uploadToCloudinary(file);
 
-  );
+    await set(
+
+      push(
+        ref(
+          db,
+          "Users/" +
+          currentUid +
+          "/Vault"
+        )
+      ),
+
+      {
+        url
+      }
+
+    );
+
+    alert("Uploaded");
+
+  }catch(e){
+
+    console.log(e);
+
+    alert("Upload Failed");
+
+  }
 
 };
 
@@ -162,6 +176,8 @@ function loadVault(){
             ? data
             : data.url;
 
+        if(!imageUrl) return;
+
         const div =
           document.createElement("div");
 
@@ -181,27 +197,40 @@ function loadVault(){
 
         `;
 
+        // DELETE BUTTON
         div
         .querySelector(".deleteBtn")
         .onclick =
         async () => {
 
-          await set(
+          try{
 
-            push(
-              ref(
-                db,
-                "Users/" +
-                currentUid +
-                "/Bin"
-              )
-            ),
+            // MOVE TO BIN
+            await set(
 
-            data
+              push(
+                ref(
+                  db,
+                  "Users/" +
+                  currentUid +
+                  "/Bin"
+                )
+              ),
 
-          );
+              data
 
-          await remove(child.ref);
+            );
+
+            // REMOVE FROM VAULT
+            await remove(child.ref);
+
+          }catch(e){
+
+            console.log(e);
+
+            alert("Delete Failed");
+
+          }
 
         };
 
