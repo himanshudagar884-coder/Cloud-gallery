@@ -2,22 +2,116 @@
 <html>
 <head>
   <title>Login</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+
+    body{
+      margin:0;
+      padding:0;
+      font-family:Arial;
+      background:linear-gradient(135deg,#2196F3,#00BCD4);
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .loginBox{
+      width:90%;
+      max-width:350px;
+      background:white;
+      border-radius:20px;
+      padding:30px;
+      box-shadow:0 0 20px rgba(0,0,0,0.2);
+      text-align:center;
+    }
+
+    .logo{
+      font-size:60px;
+      margin-bottom:10px;
+    }
+
+    h2{
+      margin-bottom:20px;
+      color:#111;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      margin-top:12px;
+      border:none;
+      border-radius:10px;
+      background:#f2f2f2;
+      font-size:15px;
+      box-sizing:border-box;
+    }
+
+    button{
+      width:100%;
+      padding:14px;
+      margin-top:18px;
+      border:none;
+      border-radius:10px;
+      background:#2196F3;
+      color:white;
+      font-size:16px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+
+    a{
+      color:#2196F3;
+      text-decoration:none;
+      font-weight:bold;
+    }
+
+    p{
+      margin-top:18px;
+      color:#555;
+    }
+
+  </style>
+
 </head>
 <body>
 
-<h2>Login</h2>
+<div class="loginBox">
 
-<input type="email" id="email" placeholder="Email">
-<br><br>
+  <div class="logo">
+    ☁️
+  </div>
 
-<input type="password" id="password" placeholder="Password">
-<br><br>
+  <h2>
+    Cloud Gallery
+  </h2>
 
-<button onclick="login()">Login</button>
+  <input
+    type="email"
+    id="email"
+    placeholder="Enter Email">
 
-<p>
-  <a href="signup.html">Create account</a>
-</p>
+  <input
+    type="password"
+    id="password"
+    placeholder="Enter Password">
+
+  <button onclick="login()">
+    Login
+  </button>
+
+  <p>
+    Don't have account?
+    <a href="signup.html">
+      Signup
+    </a>
+  </p>
+
+</div>
 
 <script type="module" src="auth.js"></script>
 
