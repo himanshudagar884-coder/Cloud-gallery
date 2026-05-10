@@ -34,7 +34,29 @@
   </style>
 </head>
 
-  <div class="bottomNav">
+
+<body>
+
+<div class="topbar">
+  Cloud Gallery
+
+  <div style="float:right">
+    <button onclick="location.href='users.html'">Chats</button>
+    <button onclick="location.href='vault.html'">Vault</button>
+    <button onclick="location.href='account.html'">Account</button>
+  </div>
+</div>
+
+<br>
+
+<input type="file" id="fileInput">
+<button onclick="uploadMedia()">Upload</button>
+
+<div class="gallery" id="gallery"></div>
+
+<script type="module" src="gallery.js"></script>
+<script type="module" src="app.js"></script>
+<div class="bottomNav">
 
   <div class="navItem"
        onclick="location.href='gallery.html'">
@@ -60,28 +82,6 @@
 
   </div>
 
-  </div>
-<body>
-
-<div class="topbar">
-  Cloud Gallery
-
-  <div style="float:right">
-    <button onclick="location.href='users.html'">Chats</button>
-    <button onclick="location.href='vault.html'">Vault</button>
-    <button onclick="location.href='account.html'">Account</button>
-  </div>
 </div>
-
-<br>
-
-<input type="file" id="fileInput">
-<button onclick="uploadMedia()">Upload</button>
-
-<div class="gallery" id="gallery"></div>
-
-<script type="module" src="gallery.js"></script>
-<script type="module" src="app.js"></script>
-
 </body>
 </html>
