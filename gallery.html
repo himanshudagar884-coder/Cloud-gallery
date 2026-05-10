@@ -1,1 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gallery</title>
 
+  <style>
+    body{
+      margin:0;
+      font-family:Arial;
+      background:#f2f2f2;
+    }
+
+    .topbar{
+      background:#2196F3;
+      color:white;
+      padding:15px;
+      font-size:22px;
+      font-weight:bold;
+    }
+
+    .gallery{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
+      gap:10px;
+      padding:10px;
+    }
+
+    .media{
+      width:100%;
+      height:120px;
+      object-fit:cover;
+      border-radius:10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  Cloud Gallery
+
+  <div style="float:right">
+    <button onclick="location.href='users.html'">Chats</button>
+    <button onclick="location.href='vault.html'">Vault</button>
+    <button onclick="location.href='account.html'">Account</button>
+  </div>
+</div>
+
+<br>
+
+<input type="file" id="fileInput">
+<button onclick="uploadMedia()">Upload</button>
+
+<div class="gallery" id="gallery"></div>
+
+<script type="module" src="gallery.js"></script>
+<script type="module" src="app.js"></script>
+
+</body>
+</html>
