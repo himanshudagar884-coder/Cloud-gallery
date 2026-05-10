@@ -1,1 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat</title>
 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+
+    .chatContainer{
+      height:80vh;
+      overflow-y:auto;
+      padding:10px;
+    }
+
+    .message{
+      max-width:70%;
+      padding:10px;
+      margin:8px;
+      border-radius:10px;
+      color:white;
+    }
+
+    .mine{
+      background:#2196F3;
+      margin-left:auto;
+    }
+
+    .other{
+      background:#666;
+    }
+
+    .bottomBar{
+      position:fixed;
+      bottom:0;
+      width:100%;
+      display:flex;
+      background:white;
+      padding:10px;
+      box-sizing:border-box;
+    }
+
+    .bottomBar input{
+      flex:1;
+      margin-right:10px;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  Chat
+</div>
+
+<div id="chatContainer" class="chatContainer"></div>
+
+<div class="bottomBar">
+
+  <input
+    type="text"
+    id="messageInput"
+    placeholder="Type message">
+
+  <button onclick="sendMessage()">
+    Send
+  </button>
+
+</div>
+
+<script type="module" src="chat.js"></script>
+<script type="module" src="app.js"></script>
+
+</body>
+</html>
