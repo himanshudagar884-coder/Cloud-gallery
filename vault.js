@@ -1,13 +1,18 @@
-import { auth, db } from "./firebase.js";
-import { uploadToCloudinary } from "./upload.js";
+import { auth, db }
+from "./firebase.js";
+
+import { uploadToCloudinary }
+from "./upload.js";
 
 import {
   ref,
   push,
   set,
   get,
-  onValue
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  onValue,
+  remove
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 let currentUid = "";
 
@@ -27,10 +32,12 @@ auth.onAuthStateChanged(user => {
 
 });
 
-window.unlockVault = async function(){
+window.unlockVault =
+async function(){
 
   const enteredPassword =
-    document.getElementById("vaultPassword")
+    document
+    .getElementById("vaultPassword")
     .value
     .trim();
 
@@ -43,40 +50,42 @@ window.unlockVault = async function(){
 
   try{
 
-    // GET PASSWORD FROM FIREBASE
     const snapshot =
       await get(
-        ref(db,
-          "Users/" + currentUid)
+        ref(
+          db,
+          "Users/" + currentUid
+        )
       );
 
-    if(!snapshot.exists()){
+    const data =
+      snapshot.val();
 
-      alert("User Not Found");
-      return;
-
-    }
-
-    const data = snapshot.val();
-
-    // YOUR ANDROID APP PASSWORD FIELD
+    // CHANGE THIS IF NEEDED
     const savedPassword =
-      data.vaultPassword;
+      data.vaultPassword ||
+      data.vaultLock ||
+      data.password;
 
     if(!savedPassword){
 
-      alert("No Vault Password Set");
+      alert("Vault Lock Not Set");
       return;
 
     }
 
-    if(enteredPassword === savedPassword){
+    if(
+      enteredPassword ===
+      savedPassword
+    ){
 
-      document.getElementById("vaultSection")
-        .style.display = "block";
+      document
+      .querySelector(".vaultLock")
+      .style.display = "none";
 
-      document.querySelector(".vaultLock")
-        .style.display = "none";
+      document
+      .getElementById("vaultSection")
+      .style.display = "block";
 
       loadVault();
 
@@ -89,47 +98,42 @@ window.unlockVault = async function(){
   }catch(e){
 
     console.log(e);
-    alert("Error Unlocking Vault");
+
+    alert("Vault Error");
 
   }
 
 };
 
-window.uploadVaultMedia = async function(){
+window.uploadVaultMedia =
+async function(){
 
   const file =
-    document.getElementById("vaultFile")
+    document
+    .getElementById("vaultFile")
     .files[0];
 
   if(!file) return;
 
-  try{
+  const url =
+    await uploadToCloudinary(file);
 
-    const url =
-      await uploadToCloudinary(file);
+  await set(
 
-    await set(
-      push(
-        ref(
-          db,
-          "Users/" +
-          currentUid +
-          "/Vault"
-        )
-      ),
-      {
-        url
-      }
-    );
+    push(
+      ref(
+        db,
+        "Users/" +
+        currentUid +
+        "/Vault"
+      )
+    ),
 
-    alert("Uploaded");
+    {
+      url
+    }
 
-  }catch(e){
-
-    console.log(e);
-    alert("Upload Failed");
-
-  }
+  );
 
 };
 
@@ -150,23 +154,59 @@ function loadVault(){
 
       snapshot.forEach(child => {
 
-        const data = child.val();
+        const data =
+          child.val();
 
         const imageUrl =
           typeof data === "string"
             ? data
             : data.url;
 
-        if(!imageUrl) return;
+        const div =
+          document.createElement("div");
 
-        const img =
-          document.createElement("img");
+        div.style.position =
+          "relative";
 
-        img.src = imageUrl;
+        div.innerHTML = `
 
-        img.className = "media";
+          <img
+            src="${imageUrl}"
+            class="media">
 
-        vaultGallery.appendChild(img);
+          <button
+            class="deleteBtn">
+            🗑
+          </button>
+
+        `;
+
+        div
+        .querySelector(".deleteBtn")
+        .onclick =
+        async () => {
+
+          await set(
+
+            push(
+              ref(
+                db,
+                "Users/" +
+                currentUid +
+                "/Bin"
+              )
+            ),
+
+            data
+
+          );
+
+          await remove(child.ref);
+
+        };
+
+        vaultGallery
+        .appendChild(div);
 
       });
 
