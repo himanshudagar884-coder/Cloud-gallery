@@ -3,35 +3,57 @@
 <head>
   <title>Vault</title>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="topbar">
-  Private Vault
+
+  <span>
+    Private Vault
+  </span>
+
+  <span class="menuBtn"
+        onclick="toggleMenu()">
+    ⋮
+  </span>
+
 </div>
 
-<br>
+<div class="menu" id="menu">
 
-<div style="padding:10px;">
+  <div onclick="location.href='users.html'">
+    Chats
+  </div>
+
+  <div onclick="location.href='account.html'">
+    Account
+  </div>
+
+</div>
+
+<div class="vaultLock">
 
   <input type="password"
          id="vaultPassword"
          placeholder="Enter Vault Password">
 
   <button onclick="unlockVault()">
-    Unlock Vault
+    Unlock
   </button>
 
 </div>
 
-<div id="vaultSection" style="display:none;">
+<div id="vaultSection"
+     style="display:none;">
 
-  <div style="padding:10px;">
+  <div class="uploadSection">
 
-    <input type="file" id="vaultFile">
+    <input type="file"
+           id="vaultFile">
 
     <button onclick="uploadVaultMedia()">
       Upload
@@ -39,13 +61,13 @@
 
   </div>
 
-  <div class="gallery" id="vaultGallery"></div>
+  <div class="gallery"
+       id="vaultGallery">
+  </div>
 
 </div>
 
-<script type="module" src="vault.js"></script>
-<script type="module" src="app.js"></script>
-  <div class="bottomNav">
+<div class="bottomNav">
 
   <div class="navItem"
        onclick="location.href='gallery.html'">
@@ -72,6 +94,26 @@
   </div>
 
 </div>
+
+<script>
+
+function toggleMenu(){
+
+  const menu =
+    document.getElementById("menu");
+
+  if(menu.style.display === "block"){
+    menu.style.display = "none";
+  }else{
+    menu.style.display = "block";
+  }
+
+}
+
+</script>
+
+<script type="module" src="vault.js"></script>
+<script type="module" src="app.js"></script>
 
 </body>
 </html>
