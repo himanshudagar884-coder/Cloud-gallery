@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
+
   <title>Account</title>
 
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet"
+        href="style.css">
 
   <style>
 
     body{
       margin:0;
       font-family:Arial;
-      background:#f2f2f2;
-      padding-bottom:80px;
+      background:#ECE5DD;
+      padding-bottom:90px;
     }
 
     .topbar{
@@ -26,6 +28,9 @@
       display:flex;
       justify-content:space-between;
       align-items:center;
+      position:sticky;
+      top:0;
+      z-index:1000;
     }
 
     .menuBtn{
@@ -42,22 +47,23 @@
       box-shadow:0 0 10px rgba(0,0,0,0.2);
       display:none;
       overflow:hidden;
+      z-index:1000;
     }
 
     .menu div{
       padding:14px 20px;
       cursor:pointer;
-      white-space:nowrap;
     }
 
     .menu div:hover{
       background:#f2f2f2;
     }
 
+    .container{
+      padding:15px;
+    }
+
     .profileBox{
-      width:90%;
-      max-width:350px;
-      margin:25px auto;
       background:white;
       border-radius:18px;
       padding:25px;
@@ -88,13 +94,14 @@
 
     .btn{
       width:100%;
-      padding:13px;
+      padding:14px;
       border:none;
-      border-radius:10px;
+      border-radius:12px;
       color:white;
       font-size:15px;
       margin-top:14px;
       cursor:pointer;
+      font-weight:bold;
     }
 
     .uploadBtn{
@@ -105,15 +112,64 @@
       background:red;
     }
 
+    .binBtn{
+      background:#4CAF50;
+    }
+
+    .section{
+      background:white;
+      border-radius:18px;
+      padding:18px;
+      margin-top:18px;
+      box-shadow:0 0 10px rgba(0,0,0,0.08);
+    }
+
+    .sectionTitle{
+      font-size:18px;
+      font-weight:bold;
+      margin-bottom:14px;
+      color:#111;
+    }
+
+    .scrollRow{
+      display:flex;
+      overflow-x:auto;
+      gap:12px;
+      padding-bottom:5px;
+    }
+
+    .scrollItem{
+      min-width:110px;
+      background:#f5f5f5;
+      border-radius:14px;
+      padding:16px;
+      text-align:center;
+      cursor:pointer;
+      flex-shrink:0;
+    }
+
+    .scrollIcon{
+      font-size:30px;
+      margin-bottom:8px;
+    }
+
+    .scrollText{
+      font-size:14px;
+      font-weight:bold;
+      color:#333;
+    }
+
     .bottomNav{
       position:fixed;
       bottom:0;
+      left:0;
       width:100%;
       background:white;
       display:flex;
       justify-content:space-around;
       padding:10px 0;
       box-shadow:0 -2px 10px rgba(0,0,0,0.1);
+      z-index:1000;
     }
 
     .navItem{
@@ -125,9 +181,11 @@
 
     .navIcon{
       font-size:24px;
+      margin-bottom:3px;
     }
 
   </style>
+
 </head>
 <body>
 
@@ -144,7 +202,8 @@
 
 </div>
 
-<div class="menu" id="menu">
+<div class="menu"
+     id="menu">
 
   <div onclick="location.href='users.html'">
     Chats
@@ -152,81 +211,156 @@
 
 </div>
 
-<div class="profileBox">
+<div class="container">
 
-  <img
-    id="profileImage"
-    class="profileImage"
-    src="https://via.placeholder.com/100"
-    style="display:none;">
+  <div class="profileBox">
 
-  <div id="userCircle" class="circle">
-    U
+    <img
+      id="profileImage"
+      class="profileImage"
+      src="https://via.placeholder.com/100"
+      style="display:none;">
+
+    <div id="userCircle"
+         class="circle">
+      U
+    </div>
+
+    <br>
+
+    <input
+      type="file"
+      id="profileInput"
+      hidden
+      accept="image/*">
+
+    <button
+      class="btn uploadBtn"
+      onclick="
+      document
+      .getElementById('profileInput')
+      .click()
+      ">
+
+      Upload Profile Photo
+
+    </button>
+
+    <h2 id="username">
+      Username
+    </h2>
+
+    <p id="email">
+      Email
+    </p>
+
+    <button
+      class="btn logoutBtn"
+      onclick="logout()">
+
+      Logout
+
+    </button>
+
   </div>
 
-  <br>
+  <!-- BIN BELOW LOGOUT -->
+  <div class="section">
 
-  <input
-    type="file"
-    id="profileInput"
-    hidden
-    accept="image/*">
+    <div class="sectionTitle">
+      Storage
+    </div>
 
-  <button
-    class="btn uploadBtn"
-    onclick="document.getElementById('profileInput').click()">
+    <div class="scrollRow">
 
-    Upload Profile Photo
+      <div class="scrollItem"
+           onclick="
+           location.href='bin.html'
+           ">
 
-  </button>
+        <div class="scrollIcon">
+          🗑
+        </div>
 
-  <h2 id="username">
-    Username
-  </h2>
+        <div class="scrollText">
+          Recycle Bin
+        </div>
 
-  <p id="email">
-    Email
-  </p>
+      </div>
 
-  <button
-    class="btn logoutBtn"
-    onclick="logout()">
+      <div class="scrollItem"
+           onclick="
+           location.href='vault.html'
+           ">
 
-    Logout
+        <div class="scrollIcon">
+          🔒
+        </div>
 
-  </button>
+        <div class="scrollText">
+          Vault
+        </div>
+
+      </div>
+
+      <div class="scrollItem"
+           onclick="
+           location.href='gallery.html'
+           ">
+
+        <div class="scrollIcon">
+          🖼
+        </div>
+
+        <div class="scrollText">
+          Gallery
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
 
 </div>
 
 <div class="bottomNav">
 
   <div class="navItem"
-       onclick="location.href='gallery.html'">
+       onclick="
+       location.href='gallery.html'
+       ">
 
-    <div class="navIcon">🏠</div>
+    <div class="navIcon">
+      🏠
+    </div>
+
     Home
 
   </div>
 
   <div class="navItem"
-       onclick="location.href='vault.html'">
+       onclick="
+       location.href='vault.html'
+       ">
 
-    <div class="navIcon">🔒</div>
+    <div class="navIcon">
+      🔒
+    </div>
+
     Vault
-    <button
-  class="btn galleryBtn"
-  onclick="location.href='bin.html'">
-
-  Open Bin
-
-</button>
 
   </div>
 
   <div class="navItem"
-       onclick="location.href='account.html'">
+       onclick="
+       location.href='account.html'
+       ">
 
-    <div class="navIcon">👤</div>
+    <div class="navIcon">
+      👤
+    </div>
+
     Account
 
   </div>
@@ -238,20 +372,35 @@
 function toggleMenu(){
 
   const menu =
-    document.getElementById("menu");
+    document
+    .getElementById("menu");
 
-  if(menu.style.display === "block"){
-    menu.style.display = "none";
+  if(
+    menu.style.display
+    === "block"
+  ){
+
+    menu.style.display =
+      "none";
+
   }else{
-    menu.style.display = "block";
+
+    menu.style.display =
+      "block";
+
   }
 
 }
 
 </script>
 
-<script type="module" src="account.js"></script>
-<script type="module" src="app.js"></script>
+<script type="module"
+        src="account.js">
+</script>
+
+<script type="module"
+        src="app.js">
+</script>
 
 </body>
 </html>
