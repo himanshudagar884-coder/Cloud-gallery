@@ -13,32 +13,36 @@
 </head>
 <body>
 
-<!-- TOP BAR -->
+<!-- TOP GREEN BAR -->
 
 <div class="topbar">
 
-  <span class="backBtn"
-        onclick="history.back()">
-    ←
-  </span>
+  <div class="topLeft">
 
-  <span>
-    Chat
-  </span>
+    <span class="backBtn"
+          onclick="history.back()">
+      ←
+    </span>
 
-</div>
+    <span class="chatTitle">
+      Chat
+    </span>
 
-<!-- CALL BUTTONS TOP -->
+  </div>
 
-<div class="callButtonsTop">
+  <!-- CALL BUTTONS INSIDE GREEN AREA -->
 
-  <button onclick="startVoiceCall()">
-    📞 Voice
-  </button>
+  <div class="topCallButtons">
 
-  <button onclick="startVideoCall()">
-    📹 Video
-  </button>
+    <button onclick="startVoiceCall()">
+      📞
+    </button>
+
+    <button onclick="startVideoCall()">
+      📹
+    </button>
+
+  </div>
 
 </div>
 
