@@ -1,1 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vault</title>
 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="topbar">
+  Private Vault
+</div>
+
+<br>
+
+<div style="padding:10px;">
+
+  <input type="password"
+         id="vaultPassword"
+         placeholder="Enter Vault Password">
+
+  <button onclick="unlockVault()">
+    Unlock Vault
+  </button>
+
+</div>
+
+<div id="vaultSection" style="display:none;">
+
+  <div style="padding:10px;">
+
+    <input type="file" id="vaultFile">
+
+    <button onclick="uploadVaultMedia()">
+      Upload
+    </button>
+
+  </div>
+
+  <div class="gallery" id="vaultGallery"></div>
+
+</div>
+
+<script type="module" src="vault.js"></script>
+<script type="module" src="app.js"></script>
+
+</body>
+</html>
