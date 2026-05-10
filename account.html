@@ -1,1 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Account</title>
 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="topbar">
+  Account
+</div>
+
+<div class="profileBox">
+
+  <img
+    id="profileImage"
+    class="profileImage"
+    src="https://via.placeholder.com/100"
+    style="display:none;">
+
+  <div id="userCircle" class="circle">
+    U
+  </div>
+
+  <input
+    type="file"
+    id="profileInput"
+    accept="image/*"
+    hidden>
+
+  <button
+    class="btn uploadBtn"
+    onclick="document.getElementById('profileInput').click()">
+    Upload Profile Photo
+  </button>
+
+  <h2 id="username">
+    Username
+  </h2>
+
+  <p id="email">
+    Email
+  </p>
+
+  <button
+    class="btn galleryBtn"
+    onclick="location.href='gallery.html'">
+    Open Gallery
+  </button>
+
+  <button
+    class="btn vaultBtn"
+    onclick="location.href='vault.html'">
+    Open Vault
+  </button>
+
+  <button
+    class="btn logoutBtn"
+    onclick="logout()">
+    Logout
+  </button>
+
+</div>
+
+<script type="module" src="account.js"></script>
+<script type="module" src="app.js"></script>
+
+</body>
+</html>
