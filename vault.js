@@ -5,6 +5,7 @@ import {
   ref,
   push,
   set,
+  get,
   onValue
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
@@ -16,29 +17,79 @@ const vaultGallery =
 auth.onAuthStateChanged(user => {
 
   if(!user){
+
     location.href = "login.html";
     return;
+
   }
 
   currentUid = user.uid;
 
 });
 
-window.unlockVault = function(){
+window.unlockVault = async function(){
 
-  const password =
-    document.getElementById("vaultPassword").value;
+  const enteredPassword =
+    document.getElementById("vaultPassword")
+    .value
+    .trim();
 
-  if(password === "1234"){
+  if(!enteredPassword){
 
-    document.getElementById("vaultSection")
-      .style.display = "block";
+    alert("Enter Password");
+    return;
 
-    loadVault();
+  }
 
-  }else{
+  try{
 
-    alert("Wrong Password");
+    // GET PASSWORD FROM FIREBASE
+    const snapshot =
+      await get(
+        ref(db,
+          "Users/" + currentUid)
+      );
+
+    if(!snapshot.exists()){
+
+      alert("User Not Found");
+      return;
+
+    }
+
+    const data = snapshot.val();
+
+    // YOUR ANDROID APP PASSWORD FIELD
+    const savedPassword =
+      data.vaultPassword;
+
+    if(!savedPassword){
+
+      alert("No Vault Password Set");
+      return;
+
+    }
+
+    if(enteredPassword === savedPassword){
+
+      document.getElementById("vaultSection")
+        .style.display = "block";
+
+      document.querySelector(".vaultLock")
+        .style.display = "none";
+
+      loadVault();
+
+    }else{
+
+      alert("Wrong Password");
+
+    }
+
+  }catch(e){
+
+    console.log(e);
+    alert("Error Unlocking Vault");
 
   }
 
@@ -47,28 +98,51 @@ window.unlockVault = function(){
 window.uploadVaultMedia = async function(){
 
   const file =
-    document.getElementById("vaultFile").files[0];
+    document.getElementById("vaultFile")
+    .files[0];
 
   if(!file) return;
 
-  const url =
-    await uploadToCloudinary(file);
+  try{
 
-  await set(
-    push(ref(db,
-      "Users/" + currentUid + "/Vault")),
-    {
-      url
-    }
-  );
+    const url =
+      await uploadToCloudinary(file);
+
+    await set(
+      push(
+        ref(
+          db,
+          "Users/" +
+          currentUid +
+          "/Vault"
+        )
+      ),
+      {
+        url
+      }
+    );
+
+    alert("Uploaded");
+
+  }catch(e){
+
+    console.log(e);
+    alert("Upload Failed");
+
+  }
 
 };
 
 function loadVault(){
 
   onValue(
-    ref(db,
-      "Users/" + currentUid + "/Vault"),
+
+    ref(
+      db,
+      "Users/" +
+      currentUid +
+      "/Vault"
+    ),
 
     snapshot => {
 
