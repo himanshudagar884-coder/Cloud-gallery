@@ -3,7 +3,8 @@
 <head>
   <title>Chats</title>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="style.css">
 
@@ -14,6 +15,7 @@
       padding:0;
       font-family:Arial;
       background:#ECE5DD;
+      padding-bottom:80px;
     }
 
     .topbar{
@@ -22,6 +24,14 @@
       padding:16px;
       font-size:22px;
       font-weight:bold;
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
+
+    .backBtn{
+      cursor:pointer;
+      font-size:28px;
     }
 
     .searchBox{
@@ -89,7 +99,16 @@
 <body>
 
 <div class="topbar">
-  Chats
+
+  <span class="backBtn"
+        onclick="history.back()">
+    ←
+  </span>
+
+  <span>
+    Chats
+  </span>
+
 </div>
 
 <div class="searchBox">
