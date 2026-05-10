@@ -1,100 +1,172 @@
-import { auth, db } from "./firebase.js";
+import { auth, db }
+from "./firebase.js";
+
+import { uploadToCloudinary }
+from "./upload.js";
 
 import {
   ref,
   push,
   set,
-  onValue
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-const params =
-  new URLSearchParams(location.search);
-
-const otherUid =
-  params.get("uid");
+  onValue,
+  remove
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 let currentUid = "";
 
-const chatContainer =
-  document.getElementById("chatContainer");
+const gallery =
+  document.getElementById("gallery");
 
 auth.onAuthStateChanged(user => {
 
   if(!user){
+
     location.href = "login.html";
     return;
+
   }
 
   currentUid = user.uid;
 
-  loadMessages();
+  loadGallery();
 
 });
 
-function getRoomId(){
+window.uploadMedia =
+async function(){
 
-  return [currentUid, otherUid]
-    .sort()
-    .join("_");
+  const file =
+    document
+    .getElementById("fileInput")
+    .files[0];
 
-}
+  if(!file){
 
-window.sendMessage = async function(){
+    alert("Select File");
+    return;
 
-  const text =
-    document.getElementById("messageInput").value;
+  }
 
-  if(!text.trim()) return;
+  try{
 
-  const roomId = getRoomId();
+    const url =
+      await uploadToCloudinary(file);
 
-  await set(
-    push(ref(db, "Chats/" + roomId)),
-    {
-      senderUid:currentUid,
-      receiverUid:otherUid,
-      message:text,
-      type:"text",
-      timestamp:Date.now()
-    }
-  );
+    await set(
 
-  document.getElementById("messageInput").value = "";
+      push(
+        ref(
+          db,
+          "Users/" +
+          currentUid +
+          "/Gallery"
+        )
+      ),
+
+      {
+        url
+      }
+
+    );
+
+    alert("Uploaded");
+
+  }catch(e){
+
+    console.log(e);
+
+    alert("Upload Failed");
+
+  }
 
 };
 
-function loadMessages(){
-
-  const roomId = getRoomId();
+function loadGallery(){
 
   onValue(
-    ref(db, "Chats/" + roomId),
+
+    ref(
+      db,
+      "Users/" +
+      currentUid +
+      "/Gallery"
+    ),
 
     snapshot => {
 
-      chatContainer.innerHTML = "";
+      gallery.innerHTML = "";
 
       snapshot.forEach(child => {
 
-        const data = child.val();
+        const data =
+          child.val();
+
+        const imageUrl =
+          typeof data === "string"
+            ? data
+            : data.url;
+
+        if(!imageUrl) return;
 
         const div =
           document.createElement("div");
 
-        div.className =
-          "message " +
-          (data.senderUid === currentUid
-            ? "mine"
-            : "other");
+        div.style.position =
+          "relative";
 
-        div.innerText = data.message;
+        div.innerHTML = `
 
-        chatContainer.appendChild(div);
+          <img
+            src="${imageUrl}"
+            class="media">
+
+          <button
+            class="deleteBtn">
+            🗑
+          </button>
+
+        `;
+
+        div
+        .querySelector(".deleteBtn")
+        .onclick =
+        async () => {
+
+          try{
+
+            // MOVE TO BIN
+            await set(
+
+              push(
+                ref(
+                  db,
+                  "Users/" +
+                  currentUid +
+                  "/Bin"
+                )
+              ),
+
+              data
+
+            );
+
+            // DELETE FROM GALLERY
+            await remove(child.ref);
+
+          }catch(e){
+
+            console.log(e);
+
+            alert("Delete Failed");
+
+          }
+
+        };
+
+        gallery.appendChild(div);
 
       });
-
-      chatContainer.scrollTop =
-        chatContainer.scrollHeight;
 
     }
 
