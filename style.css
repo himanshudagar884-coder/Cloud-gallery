@@ -12,7 +12,6 @@ body{
   background:#075E54;
   color:white;
   padding:16px;
-  font-size:22px;
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -21,12 +20,37 @@ body{
   z-index:1000;
 }
 
+.chatTitle{
+  font-size:22px;
+  font-weight:bold;
+}
+
 .backBtn{
   font-size:28px;
   cursor:pointer;
 }
 
-/* ACCOUNT 3 DOTS */
+/* CHAT TOP BAR */
+
+.chatTopBar{
+  background:#075E54;
+  color:white;
+  padding:12px 14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+
+.topLeft{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+/* ACCOUNT MENU */
 
 .menuBtn{
   font-size:28px;
@@ -143,40 +167,103 @@ body{
   font-weight:bold;
 }
 
-/* GALLERY */
+/* UPLOAD AREA */
+
+.uploadContainer{
+  background:white;
+  padding:15px;
+  position:sticky;
+  top:64px;
+  z-index:100;
+}
+
+.uploadContainer input{
+  width:100%;
+}
+
+/* VAULT LOCK */
+
+.vaultLockContainer{
+  padding:20px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  background:white;
+  position:sticky;
+  top:64px;
+  z-index:100;
+}
+
+.vaultLockContainer input{
+  flex:1;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:#f2f2f2;
+  font-size:16px;
+}
+
+.vaultLockContainer button{
+  padding:14px 18px;
+  border:none;
+  border-radius:12px;
+  background:#2196F3;
+  color:white;
+  font-weight:bold;
+}
+
+/* GALLERY GRID */
 
 .gallery{
   display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-  padding:10px;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:4px;
+  padding:4px;
+  padding-bottom:90px;
 }
 
 .media{
   width:100%;
-  border-radius:14px;
+  aspect-ratio:1/1;
   object-fit:cover;
+  border-radius:6px;
+  display:block;
 }
+
+/* MOBILE GRID */
+
+@media(max-width:700px){
+
+  .gallery{
+    grid-template-columns:
+    repeat(5,minmax(0,1fr));
+  }
+
+}
+
+/* DELETE BUTTON */
 
 .deleteBtn{
   position:absolute;
-  top:8px;
-  right:8px;
+  top:5px;
+  right:5px;
+  width:28px;
+  height:28px;
   border:none;
+  border-radius:50%;
   background:red;
   color:white;
-  width:35px;
-  height:35px;
-  border-radius:50%;
-  font-size:18px;
+  font-size:15px;
+  z-index:20;
 }
 
 /* CHAT */
 
 .chatContainer{
-  height:calc(100vh - 220px);
+  height:calc(100vh - 150px);
   overflow-y:auto;
   padding:10px;
+  padding-bottom:90px;
   box-sizing:border-box;
 }
 
@@ -198,9 +285,11 @@ body{
   background:#666;
 }
 
+/* MESSAGE BAR */
+
 .bottomBar{
   position:fixed;
-  bottom:0;
+  bottom:70px;
   left:0;
   width:100%;
   display:flex;
@@ -229,27 +318,21 @@ body{
   font-size:18px;
 }
 
-/* CALL BUTTONS */
+/* CHAT CALL BUTTONS */
 
-.callButtonsTop{
+.topCallButtons{
   display:flex;
   gap:10px;
-  padding:10px;
-  background:white;
-  position:sticky;
-  top:60px;
-  z-index:100;
 }
 
-.callButtonsTop button{
-  flex:1;
+.topCallButtons button{
+  width:42px;
+  height:42px;
   border:none;
-  padding:12px;
-  border-radius:12px;
-  background:#2196F3;
+  border-radius:50%;
+  background:rgba(255,255,255,0.2);
   color:white;
-  font-size:16px;
-  font-weight:bold;
+  font-size:20px;
 }
 
 /* CALL SCREEN */
