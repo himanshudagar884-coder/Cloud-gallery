@@ -1,84 +1,92 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Cloud Gallery</title>
+
+  <title>Gallery</title>
 
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet"
+        href="style.css">
+
 </head>
 <body>
 
+<!-- TOP BAR -->
+
 <div class="topbar">
 
-  <span>
-    Cloud Gallery
+  <span class="chatTitle">
+    ☁ Cloud Gallery
   </span>
 
- 
-<div class="uploadSection">
+</div>
+
+<!-- UPLOAD AREA -->
+
+<div class="uploadContainer">
 
   <input type="file"
-         id="fileInput">
-
-  <button onclick="uploadMedia()">
-    Upload
-  </button>
+         id="fileInput"
+         multiple>
 
 </div>
 
-<div class="gallery"
-     id="gallery">
+<!-- GALLERY -->
+
+<div id="gallery"
+     class="gallery">
 </div>
+
+<!-- BOTTOM NAV -->
 
 <div class="bottomNav">
 
   <div class="navItem"
-       onclick="location.href='gallery.html'">
+       onclick="
+       location.href='gallery.html'
+       ">
 
-    <div class="navIcon">🏠</div>
+    <div class="navIcon">
+      🏠
+    </div>
+
     Home
 
   </div>
 
   <div class="navItem"
-       onclick="location.href='vault.html'">
+       onclick="
+       location.href='vault.html'
+       ">
 
-    <div class="navIcon">🔒</div>
+    <div class="navIcon">
+      🔒
+    </div>
+
     Vault
 
   </div>
 
   <div class="navItem"
-       onclick="location.href='account.html'">
+       onclick="
+       location.href='account.html'
+       ">
 
-    <div class="navIcon">👤</div>
+    <div class="navIcon">
+      👤
+    </div>
+
     Account
 
   </div>
 
 </div>
 
-<script>
-
-function toggleMenu(){
-
-  const menu =
-    document.getElementById("menu");
-
-  if(menu.style.display === "block"){
-    menu.style.display = "none";
-  }else{
-    menu.style.display = "block";
-  }
-
-}
-
+<script type="module"
+        src="gallery.js">
 </script>
-
-<script type="module" src="gallery.js"></script>
-<script type="module" src="app.js"></script>
 
 </body>
 </html>
