@@ -1,23 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
+
   <title>Vault</title>
 
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet"
+        href="style.css">
+
 </head>
 <body>
 
+<!-- TOP BAR -->
+
 <div class="topbar">
 
-  <span>
-    Private Vault
+  <span class="chatTitle">
+    🔒 Private Vault
   </span>
 
+</div>
 
-<div class="vaultLock">
+<!-- VAULT PASSWORD AREA -->
+
+<div class="vaultLockContainer">
 
   <input type="password"
          id="vaultPassword"
@@ -29,73 +37,60 @@
 
 </div>
 
-<div id="vaultSection"
-     style="display:none;">
+<!-- VAULT GALLERY -->
 
-  <div class="uploadSection">
-
-    <input type="file"
-           id="vaultFile">
-
-    <button onclick="uploadVaultMedia()">
-      Upload
-    </button>
-
-  </div>
-
-  <div class="gallery"
-       id="vaultGallery">
-  </div>
-
+<div id="vaultGallery"
+     class="gallery">
 </div>
+
+<!-- BOTTOM NAV -->
 
 <div class="bottomNav">
 
   <div class="navItem"
-       onclick="location.href='gallery.html'">
+       onclick="
+       location.href='gallery.html'
+       ">
 
-    <div class="navIcon">🏠</div>
+    <div class="navIcon">
+      🏠
+    </div>
+
     Home
 
   </div>
 
   <div class="navItem"
-       onclick="location.href='vault.html'">
+       onclick="
+       location.href='vault.html'
+       ">
 
-    <div class="navIcon">🔒</div>
+    <div class="navIcon">
+      🔒
+    </div>
+
     Vault
 
   </div>
 
   <div class="navItem"
-       onclick="location.href='account.html'">
+       onclick="
+       location.href='account.html'
+       ">
 
-    <div class="navIcon">👤</div>
+    <div class="navIcon">
+      👤
+    </div>
+
     Account
 
   </div>
 
 </div>
 
-<script>
-
-function toggleMenu(){
-
-  const menu =
-    document.getElementById("menu");
-
-  if(menu.style.display === "block"){
-    menu.style.display = "none";
-  }else{
-    menu.style.display = "block";
-  }
-
-}
-
+<script type="module"
+        src="vault.js">
 </script>
-
-<script type="module" src="vault.js"></script>
-<script type="module" src="app.js"></script>
 
 </body>
 </html>
