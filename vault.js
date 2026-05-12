@@ -1,100 +1,120 @@
-import { auth, db }
-from "./firebase.js";
-
-import { uploadToCloudinary }
-from "./upload.js";
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
+  getDatabase,
   ref,
-  push,
-  set,
-  get,
-  onValue,
-  remove
+  get
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-let currentUid = "";
+/* FIREBASE */
 
-const vaultGallery =
-  document.getElementById("vaultGallery");
+const firebaseConfig = {
 
-auth.onAuthStateChanged(user => {
+  apiKey: "AIzaSyCajE_pKaqsxVT9Q6XHHVrEgORVbVvDAt0",
 
-  if(!user){
+  authDomain:
+  "cloudgallery-a45ca.firebaseapp.com",
 
-    location.href = "login.html";
-    return;
+  databaseURL:
+  "https://cloudgallery-a45ca-default-rtdb.firebaseio.com",
 
-  }
+  projectId:
+  "cloudgallery-a45ca",
 
-  currentUid = user.uid;
+  storageBucket:
+  "cloudgallery-a45ca.firebasestorage.app",
 
-});
+  messagingSenderId:
+  "703978092595",
+
+  appId:
+  "1:703978092595:web:f3a43b1131057e6e758b46"
+
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getDatabase(app);
+
+/* USER */
+
+const currentUser =
+JSON.parse(
+localStorage.getItem("cloudUser")
+);
+
+/* UNLOCK VAULT */
 
 window.unlockVault =
 async function(){
 
   const enteredPassword =
-    document
-    .getElementById("vaultPassword")
-    .value
-    .trim();
+  document
+  .getElementById("vaultPassword")
+  .value
+  .trim();
 
-  if(!enteredPassword){
+  if(!currentUser){
 
-    alert("Enter Password");
+    alert("Login first");
+
     return;
 
   }
 
   try{
 
-    // READ PASSWORD
+    const vaultPasswordRef =
+    ref(
+      db,
+      "VaultPasswords/" +
+      currentUser.uid
+    );
+
     const snapshot =
-      await get(
-        ref(
-          db,
-          "VaultPasswords/" +
-          currentUid
-        )
-      );
+    await get(
+      vaultPasswordRef
+    );
 
     if(!snapshot.exists()){
 
-      alert("Vault Lock Not Set");
+      alert(
+        "Vault password not set"
+      );
+
       return;
 
     }
 
-    const savedPassword =
-      snapshot.val();
+    const realPassword =
+    snapshot.val();
 
     if(
       enteredPassword ===
-      savedPassword
+      realPassword
     ){
 
-      // OPEN VAULT
-      document
-      .querySelector(".vaultLock")
-      .style.display = "none";
-
-      document
-      .getElementById("vaultSection")
-      .style.display = "block";
+      alert(
+        "Vault Unlocked"
+      );
 
       loadVault();
 
     }else{
 
-      alert("Wrong Password");
+      alert(
+        "Wrong Password"
+      );
 
     }
 
-  }catch(e){
+  }catch(error){
 
-    console.log(e);
+    console.log(error);
 
     alert("Vault Error");
 
@@ -102,145 +122,140 @@ async function(){
 
 };
 
-window.uploadVaultMedia =
-async function(){
+/* LOAD VAULT */
 
-  const file =
-    document
-    .getElementById("vaultFile")
-    .files[0];
+async function loadVault(){
 
-  if(!file){
+  const gallery =
+  document.getElementById(
+    "vaultGallery"
+  );
 
-    alert("Select File");
-    return;
-
-  }
+  gallery.innerHTML = "";
 
   try{
 
-    const url =
-      await uploadToCloudinary(file);
+    /* POSSIBLE DATABASE PATHS */
 
-    await set(
+    const possiblePaths = [
 
-      push(
-        ref(
-          db,
-          "Users/" +
-          currentUid +
-          "/Vault"
-        )
-      ),
+      "Vault/" +
+      currentUser.uid,
 
-      {
-        url
-      }
+      "vault/" +
+      currentUser.uid,
 
-    );
+      "PrivateVault/" +
+      currentUser.uid,
 
-    alert("Uploaded");
-
-  }catch(e){
-
-    console.log(e);
-
-    alert("Upload Failed");
-
-  }
-
-};
-
-function loadVault(){
-
-  onValue(
-
-    ref(
-      db,
       "Users/" +
-      currentUid +
-      "/Vault"
-    ),
+      currentUser.uid +
+      "/vault"
 
-    snapshot => {
+    ];
 
-      vaultGallery.innerHTML = "";
+    let foundData =
+    null;
 
-      snapshot.forEach(child => {
+    for(const path of possiblePaths){
 
-        const data =
-          child.val();
+      const snapshot =
+      await get(
+        ref(db,path)
+      );
 
-        const imageUrl =
-          typeof data === "string"
-            ? data
-            : data.url;
+      if(snapshot.exists()){
 
-        if(!imageUrl) return;
+        foundData =
+        snapshot.val();
 
-        const div =
-          document.createElement("div");
+        break;
 
-        div.style.position =
-          "relative";
-
-        div.innerHTML = `
-
-          <img
-            src="${imageUrl}"
-            class="media">
-
-          <button
-            class="deleteBtn">
-            🗑
-          </button>
-
-        `;
-
-        // DELETE BUTTON
-        div
-        .querySelector(".deleteBtn")
-        .onclick =
-        async () => {
-
-          try{
-
-            // MOVE TO BIN
-            await set(
-
-              push(
-                ref(
-                  db,
-                  "Users/" +
-                  currentUid +
-                  "/Bin"
-                )
-              ),
-
-              data
-
-            );
-
-            // REMOVE FROM VAULT
-            await remove(child.ref);
-
-          }catch(e){
-
-            console.log(e);
-
-            alert("Delete Failed");
-
-          }
-
-        };
-
-        vaultGallery
-        .appendChild(div);
-
-      });
+      }
 
     }
 
-  );
+    if(!foundData){
+
+      gallery.innerHTML = `
+
+        <p style="
+        padding:20px;
+        text-align:center;
+        color:#666;
+        ">
+
+          No Vault Media
+
+        </p>
+
+      `;
+
+      return;
+
+    }
+
+    Object.keys(foundData)
+    .reverse()
+    .forEach(key=>{
+
+      const item =
+      foundData[key];
+
+      const imageUrl =
+
+        item.url ||
+
+        item.imageUrl ||
+
+        item.downloadUrl ||
+
+        item.mediaUrl ||
+
+        item.image ||
+
+        item.photo;
+
+      if(!imageUrl)
+        return;
+
+      const wrapper =
+      document.createElement(
+        "div"
+      );
+
+      wrapper.style.position =
+      "relative";
+
+      const img =
+      document.createElement(
+        "img"
+      );
+
+      img.src =
+      imageUrl;
+
+      img.className =
+      "media";
+
+      wrapper.appendChild(
+        img
+      );
+
+      gallery.appendChild(
+        wrapper
+      );
+
+    });
+
+  }catch(error){
+
+    console.log(error);
+
+    alert(
+      "Error loading vault"
+    );
+
+  }
 
 }
